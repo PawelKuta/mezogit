@@ -439,6 +439,14 @@ margin:5px
   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>  
 <script>
+    function getUserInfo(){
+        var userId = 0000;
+        var userIp = 0000;
+        var userKey = '0000';
+        var userSession = 0000;
+        //$userId= $("#").attr('');
+    }
+    
     function getAccordions(){
     
  var acc = document.getElementsByClassName("accordion");
@@ -611,7 +619,6 @@ function getUserOrders(){
     
     var user_id = 3924;
     var dom = $("#zamowienia .up-container");
-   // var panelContent = ("<div class='up-panel-lc'><p>Numer zamówienia:<span class='panel-order'></span></p><p>Status:</p><p>Płatność:</p><p>Dostawa:</p><p>Faktura:</p></div>");
     
                      $.ajax({
                 url: 'userPanelController.php'
@@ -625,9 +632,8 @@ function getUserOrders(){
                     if (!data.error) {
                         var content = JSON.parse(data);
                         console.log(content);
-                    //    $("#zamowienia").html(data);
                         
-                    var productsTable = "<table><thead><tr><td>Nazwa produktu</td><td>Ilość</td><td>Cena</td><td>Wartość</td></tr></thead><tbody></tbody><table>"    
+                    var productsTable = "<table class='up-products-table'><thead><tr><th>Nazwa produktu</th><th>Ilość</th><th>Cena</th><th>Wartość</th></tr></thead><tbody></tbody><table>"    
                         
                         for(i=0;i<content['orders'].length;i++){
                             var order_id = content['orders'][i]['order_id'];
@@ -643,7 +649,6 @@ function getUserOrders(){
                         }getAccordions()
                     }
                     else {
-                    //    $("#zamowienia").html(content);
                     }
                 }
             });   
@@ -667,7 +672,6 @@ function getUserOrders(){
          var summary = $(".panel[order-id='"+order_id+"'] .products .summary");
          var shippingAddress = $(".panel[order-id='"+order_id+"'] .shippingAddress");
          var invoiceAddress = $(".panel[order-id='"+order_id+"'] .invoiceAddress");
-      //  element.html('asa');
     var user_id = 3924;
         
                 $.ajax({
@@ -684,20 +688,26 @@ function getUserOrders(){
                         var content = JSON.parse(data);
                         console.log(content);
                         for(i=0;i<content['order'].length;i++){
-                            $(products).append("<tr><td>"+content['order'][i]['name']+"</td><td>"+content['order'][i]['quantity']+content['order'][i]['unit']+"</td><td>"+content['order'][i]['price']+"</td><td>"+content['order'][i]['product_sum']+"</td></tr>")
+                            $(products).append("<tr><td><a target='_blank' href='https://www.mezoko.com/pl/p/product/"+content['order'][i]['product_id']+"'>"+content['order'][i]['name']+"</a></td><td>"+content['order'][i]['quantity']+" "+content['order'][i]['unit']+"</td><td>"+content['order'][i]['price']+" zł</td><td>"+content['order'][i]['product_sum']+" zł</td></tr>")
                         }
 $(summary).append("<p>Razem: "+(parseFloat(content['products_sum'])+parseFloat(content['order'][0]['shipping_cost'])).toFixed(2)+" zł</p><p>Koszt dostawy: "+content['order'][0]['shipping_cost']+" zł</p><p>Przyznane rabaty: "+((parseFloat(content['products_sum'])+parseFloat(content['order'][0]['shipping_cost']))-parseFloat(content['order'][0]['sum'])).toFixed(2)+" zł</p><p>Do zapłaty: "+content['order'][0]['sum']+"</p>");
                         if(content['invoice']==0){
                             var address = ("<p>"+content['order'][0]['firstname']+" "+content['order'][0]['lastname']+"</p><p>"+content['order'][0]['street1']+"</p><p>"+content['order'][0]['street2']+"</p><p>"+content['order'][0]['city']+"</p><p>"+content['order'][0]['postcode']+"</p><p>"+content['order'][0]['phone']+"</p>")
                             $(shippingAddress).append(address);
                             $(invoiceAddress).append(address);
+                        }else{
+                            var shippingAddressC = "<p>"+content['addresses'][1]['firstname']+" "+content['addresses'][1]['lastname']+"</p><p>"+content['addresses'][1]['street1']+"</p><p>"+content['addresses'][1]['street2']+"</p><p>"+content['addresses'][1]['city']+"</p><p>"+content['addresses'][1]['postcode']+"</p><p>"+content['addresses'][1]['phone']+"</p>";
+                            var invoiceAddressC = "<p>"+content['addresses'][0]['company']+"</p><p>"+content['addresses'][0]['firstname']+" "+content['addresses'][0]['lastname']+"</p><p>"+content['addresses'][0]['tax_id']+"</p><p>"+content['addresses'][0]['street1']+"</p><p>"+content['addresses'][0]['street2']+"</p><p>"+content['addresses'][0]['city']+"</p><p>"+content['addresses'][0]['postcode']+"</p><p>"+content['addresses'][0]['phone']+"</p>";
+                            
+                            $(shippingAddress).append(shippingAddressC);
+                            $(invoiceAddress).append(invoiceAddressC);
                         }
                         $(element).removeClass('spinner').attr('send',1);
                         var newH = document.getElementById("op-"+order_id).scrollHeight;
                         $("#op-"+order_id).css("max-height",newH);
                     }
                     else {
-                    //    $("#zamowienia").html(content);
+                   
                     }
                 }
             }); 
