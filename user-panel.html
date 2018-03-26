@@ -1,0 +1,713 @@
+<html>
+   <head>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="css/w3.css">
+  <style>
+       
+.widget-wraper {
+padding:5px;
+display:inline-block;
+width: 49%;
+height: 200px;
+box-sizing:border-box;
+float:left;
+}
+
+.long-widget{
+ padding:5px;
+display:flex;
+width: 100%;
+height: 800px;
+flex-wrap: wrap;
+box-sizing:border-box;
+
+}
+
+.panel-container {
+  /* ... */
+  display: inline-block;
+  flex-flow: row wrap;
+  width:30%;
+  vertical-align: top;
+  float:left;
+}
+
+.container2{
+  width:70%;
+  display:inline-block;
+  vertical-align: top;
+}
+
+.inner-wraper{
+  width:100%;
+  height:100%;
+  display:block;
+  cursor: pointer;
+  position:relative;
+}
+
+.green{background-color:#4fbd74}
+.green:hover{background-color:#5ad784}
+.yellow{background-color:#ffc208}
+.yellow:hover{background-color:#fdc929}
+.orange{background-color:#ff8808}
+.orange:hover{background-color:#fd9d36}
+.blue{background-color: #63c2de;}
+.blue:hover{background-color: #6fdbfb;}
+.darkgrey{background-color: #585859;}
+.darkgrey:hover{background-color: #818181;}
+.svg-icon path {fill: #ffffff !important;}
+.svg-icon {
+  width:120px !important;
+  height:120px !important;
+  float:right !important;
+  margin:5px;
+  fill: #ffffff;
+  }
+
+.userPanelAvatar{
+  border-radius: 50%;
+  display:block;
+  width:40%;
+  margin:15px auto 15px auto;
+}
+
+.userPanelName{
+  font-weight:700;
+  font-family: 'Roboto', sans-serif;
+  color:white;
+  font-size:36px;
+  text-align:center;
+  display:block;
+  margin: 5px auto 5px auto;
+}
+
+.userPanelRank{
+  font-family: 'Roboto', sans-serif;
+  color:white;
+  font-size:12px;
+  text-align:center;
+  display:block;
+  margin: 5px auto 15px auto;
+}
+
+hr.style9 {
+	border-top: 1px dashed #8c8b8b;
+	border-bottom: 1px dashed #fff;
+  width:90%;
+}
+
+.star {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-image: url(https://www.mezoko.com/skins/star.png);
+   margin:0px 10px 0px 10px;
+}
+
+.half-star {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-image: url(https://www.mezoko.com/skins/star.png);
+}
+
+.userRankContainer{
+  width:fit-content;
+  margin: 5px auto 5px auto;
+}
+
+.upper-content{
+font-family: 'Roboto', sans-serif;
+  color:white;
+  font-size:24px;
+  font-weight:700;
+  margin:5px;
+  position:absolute;
+  top:5px;
+  left:5px;
+}
+
+.bottom-content{
+font-family: 'Roboto', sans-serif;
+  color:white;
+  font-size:16px;
+  font-weight:700;
+  margin:5px;
+  position:absolute;
+  bottom:5px;
+  left:5px;
+}
+
+.up-big{
+  display:block;
+  font-size:36px;
+}
+
+.up-small{
+  display:block;
+  font-size:14px;
+}
+
+@media (max-width:768px) {
+  
+  .panel-container {
+  display: block;
+  width:100%;
+}
+  
+ .container2{
+  width:100%;
+  display:block;
+  vertical-align: top;
+} 
+
+.svg-icon {
+width:40px !important;
+height:40px !important;
+float:right !important;
+margin:5px
+}
+  
+}
+
+@media (min-width:769) and (max-width:1200px) {
+  .panel-container {
+  display: inline-block;
+  width:50%;
+}
+
+ .container2{
+  width:50%;
+  display:inline-block;
+  vertical-align: top;
+}
+
+.widget-wraper{
+  display:block;
+  width:100%;
+}
+  
+}
+  </style>
+   </head>
+    <body>
+       <div class="w3-bar w3-black">
+  <button class="w3-bar-item w3-button" onclick="openWidget('dashboard')">Aktualne promocje</button>
+  <button class="w3-bar-item w3-button" onclick="openWidget('zamowienia')">Zamówienia</button>
+  <button class="w3-bar-item w3-button" onclick="openWidget('dane')">Dane adresowe</button>
+  <button class="w3-bar-item w3-button" onclick="openWidget('opinie')">Opinie</button>
+  <button class="w3-bar-item w3-button" onclick="openWidget('raports')">Raporty</button>
+  {if $user->user->userinfo->limit_logic == 1}<button class="w3-bar-item w3-button" onclick="openWidget('limit')">Limit kredytowy</button>{/if}
+  <a class="wlink" href="https://www.mezoko.com/pl/logout"><button class="w3-bar-item w3-button" onclick="openWidget('opinie')">Wyloguj</button></a>
+</div>
+       <div  class='w3-container widget' id="dashboard">
+        <div class='panel-container'>
+ 
+  <div class='long-widget '>
+    <div class="inner-wraper darkgrey">
+    <img class="userPanelAvatar" src="https://www.mezoko.com/skins/panel_avatar.jpg">
+    <span class='userPanelName'>John Doe</span>
+    <span class='userPanelRank'>Instalator</span>
+    <hr class="style9">
+     <span class='userPanelName'>Ranga:</span>
+     <div class=userRankContainer>
+     <i class="star"></i>
+     <i class="star"></i>
+     <i class="star"></i>
+     <i class="star"></i>
+     <i class="star"></i>
+     </div>
+      <hr class="style9">
+          <div class='invoiceContainer'>
+    <span class='userPanelName'>Dane do faktury:</span>
+    <span class='userPanelRank'>P.H.U Test</span>
+    <span class='userPanelRank'>John Doe</span>
+     <span class='userPanelRank'>NIP: 999888777666</span>
+     <br>
+      <span class='userPanelRank'>Testowa 7</span>
+      <span class='userPanelRank'>11-111</span>
+      <span class='userPanelRank'>Polska</span>
+    </div>
+    </div>
+
+  </div>
+</div>
+<div class='container2'>
+<div class='widget-wraper up-nav' onclick="openWidget('zamowienia')" data="finances">
+  <div class="inner-wraper green" id="up-finances" data="finances">
+     <svg class='svg-icon' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M17 12c-3.313 0-6 2.687-6 6s2.687 6 6 6 6-2.687 6-6-2.687-6-6-6zm.5 8.474v.526h-.5v-.499c-.518-.009-1.053-.132-1.5-.363l.228-.822c.478.186 1.114.383 1.612.27.574-.13.692-.721.057-1.005-.465-.217-1.889-.402-1.889-1.622 0-.681.52-1.292 1.492-1.425v-.534h.5v.509c.362.01.768.073 1.221.21l-.181.824c-.384-.135-.808-.257-1.222-.232-.744.043-.81.688-.29.958.856.402 1.972.7 1.972 1.773.001.858-.672 1.315-1.5 1.432zm1.624-10.179c1.132-.223 2.162-.626 2.876-1.197v.652c0 .499-.386.955-1.007 1.328-.581-.337-1.208-.6-1.869-.783zm-2.124-5.795c2.673 0 5-1.007 5-2.25s-2.327-2.25-5-2.25c-2.672 0-5 1.007-5 2.25s2.328 2.25 5 2.25zm.093-2.009c-.299-.09-1.214-.166-1.214-.675 0-.284.334-.537.958-.593v-.223h.321v.211c.234.005.494.03.784.09l-.116.342c-.221-.051-.467-.099-.708-.099l-.072.001c-.482.02-.521.287-.188.399.547.169 1.267.292 1.267.74 0 .357-.434.548-.967.596v.22h-.321v-.208c-.328-.003-.676-.056-.962-.152l.147-.343c.244.063.552.126.828.126l.208-.014c.369-.053.443-.3.035-.418zm-11.093 13.009c1.445 0 2.775-.301 3.705-.768.311-.69.714-1.329 1.198-1.899-.451-1.043-2.539-1.833-4.903-1.833-2.672 0-5 1.007-5 2.25s2.328 2.25 5 2.25zm.093-2.009c-.299-.09-1.214-.166-1.214-.675 0-.284.335-.537.958-.593v-.223h.321v.211c.234.005.494.03.784.09l-.117.342c-.22-.051-.466-.099-.707-.099l-.072.001c-.482.02-.52.287-.188.399.547.169 1.267.292 1.267.74 0 .357-.434.548-.967.596v.22h-.321v-.208c-.329-.003-.676-.056-.962-.152l.147-.343c.244.063.552.126.828.126l.208-.014c.368-.053.443-.3.035-.418zm4.003 8.531c-.919.59-2.44.978-4.096.978-2.672 0-5-1.007-5-2.25v-.652c1.146.918 3.109 1.402 5 1.402 1.236 0 2.499-.211 3.549-.611.153.394.336.773.547 1.133zm-9.096-3.772v-.651c1.146.917 3.109 1.401 5 1.401 1.039 0 2.094-.151 3.028-.435.033.469.107.926.218 1.37-.888.347-2.024.565-3.246.565-2.672 0-5-1.007-5-2.25zm0-2.5v-.652c1.146.918 3.109 1.402 5 1.402 1.127 0 2.275-.176 3.266-.509-.128.493-.21 1.002-.241 1.526-.854.298-1.903.483-3.025.483-2.672 0-5-1.007-5-2.25zm11-11v-.652c1.146.918 3.109 1.402 5 1.402 1.892 0 3.854-.484 5-1.402v.652c0 1.243-2.327 2.25-5 2.25-2.672 0-5-1.007-5-2.25zm0 5v-.652c.713.571 1.744.974 2.876 1.197-.661.183-1.287.446-1.868.783-.622-.373-1.008-.829-1.008-1.328zm0-2.5v-.651c1.146.917 3.109 1.401 5 1.401 1.892 0 3.854-.484 5-1.401v.651c0 1.243-2.327 2.25-5 2.25-2.672 0-5-1.007-5-2.25z"/></svg>
+      <span class='upper-content'>Moje finanse</span>
+     <div class='bottom-content'>
+     <span class='up-big'>0</span>
+     <span class='uo-small'>PLN [suma zamówień]</span>
+     </div>
+  </div>
+</div>
+<div class='widget-wraper up-nav' onclick="openWidget('zamowienia')" data="orders">
+  <div class="inner-wraper yellow" id="up-orders">
+    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 24 24"><path d="M24 3l-.743 2h-1.929l-3.474 12h-13.239l-4.615-11h16.812l-.564 2h-13.24l2.937 7h10.428l3.432-12h4.195zm-15.5 15c-.828 0-1.5.672-1.5 1.5 0 .829.672 1.5 1.5 1.5s1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm6.9-7-1.9 7c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5z"/></svg>
+    <div class='bottom-content'>
+     <span class='up-big'>0</span>
+     <span class='uo-small'>Zamówienia</span>
+     </div>
+  </div>
+</div>
+<div class='widget-wraper up-nav' onclick="openWidget('dane')" data="adresses">
+  <div class="inner-wraper darkgrey" id="up-adresses" >
+<svg class='svg-icon' width="150" height="150" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 24 24"><path d="M13.403 24h-13.403v-22h3c1.231 0 2.181-1.084 3-2h8c.821.916 1.772 2 3 2h3v9.15c-.485-.098-.987-.15-1.5-.15l-.5.016v-7.016h-4l-2 2h-3.897l-2.103-2h-4v18h9.866c.397.751.919 1.427 1.537 2zm5.097-11c3.035 0 5.5 2.464 5.5 5.5s-2.465 5.5-5.5 5.5c-3.036 0-5.5-2.464-5.5-5.5s2.464-5.5 5.5-5.5zm0 2c1.931 0 3.5 1.568 3.5 3.5s-1.569 3.5-3.5 3.5c-1.932 0-3.5-1.568-3.5-3.5s1.568-3.5 3.5-3.5zm2.5 4h-3v-3h1v2h2v1zm-15.151-4.052l-1.049-.984-.8.823 1.864 1.776 3.136-3.192-.815-.808-2.336 2.385zm6.151 1.052h-2v-1h2v1zm2-2h-4v-1h4v1zm-8.151-4.025l-1.049-.983-.8.823 1.864 1.776 3.136-3.192-.815-.808-2.336 2.384zm8.151 1.025h-4v-1h4v1zm0-2h-4v-1h4v1zm-5-6c0 .552.449 1 1 1 .553 0 1-.448 1-1s-.447-1-1-1c-.551 0-1 .448-1 1z"/></svg>
+     <div class='bottom-content'>
+     <span class='uo-small'>Adresy wysyłki</span>
+     </div>
+  </div>
+</div>
+<div class='widget-wraper up-nav' onclick="openWidget('opinie')" data="reviews">
+  <div class="inner-wraper orange" id="up-reviews">
+    <svg class='svg-icon' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M18 14.45v6.55h-16v-12h6.743l1.978-2h-10.721v16h20v-10.573l-2 2.023zm1.473-10.615l1.707 1.707-9.281 9.378-2.23.472.512-2.169 9.292-9.388zm-.008-2.835l-11.104 11.216-1.361 5.784 5.898-1.248 11.103-11.218-4.536-4.534z"/></svg>
+        <div class='bottom-content'>
+     <span class='up-big'>0</span>
+     <span class='uo-small'>Recenzje</span>
+     </div>
+  </div>
+</div>
+<div class='widget-wraper up-nav' onclick="openWidget('zamowienia')" data="popular">
+  <div class="inner-wraper blue" id="up-popular">
+    <svg class='svg-icon' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21.406 9.558c-1.21-.051-2.87-.278-3.977-.744.809-3.283 1.253-8.814-2.196-8.814-1.861 0-2.351 1.668-2.833 3.329-1.548 5.336-3.946 6.816-6.4 7.401v-.73h-6v12h6v-.904c2.378.228 4.119.864 6.169 1.746 1.257.541 3.053 1.158 5.336 1.158 2.538 0 4.295-.997 5.009-3.686.5-1.877 1.486-7.25 1.486-8.25 0-1.648-1.168-2.446-2.594-2.506zm-17.406 10.442h-2v-8h2v8zm15.896-5.583s.201.01 1.069-.027c1.082-.046 1.051 1.469.004 1.563l-1.761.099c-.734.094-.656 1.203.141 1.172 0 0 .686-.017 1.143-.041 1.068-.056 1.016 1.429.04 1.551-.424.053-1.745.115-1.745.115-.811.072-.706 1.235.109 1.141l.771-.031c.822-.074 1.003.825-.292 1.661-1.567.881-4.685.131-6.416-.614-2.239-.965-4.438-1.934-6.959-2.006v-6c3.264-.749 6.328-2.254 8.321-9.113.898-3.092 1.679-1.931 1.679.574 0 2.071-.49 3.786-.921 5.533 1.061.543 3.371 1.402 6.12 1.556 1.055.059 1.024 1.455-.051 1.584l-1.394.167s-.608 1.111.142 1.116z"/></svg>
+        <div class='bottom-content' >
+     <span class='uo-small'>Najczęsciej kupowane</span>
+     </div>
+  </div>
+</div>
+<div class='widget-wraper up-nav' onclick="openWidget('zamowienia')" data="raports">
+  <div class="inner-wraper green" id="up-raports">
+    <svg class='svg-icon' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7 24h-6v-6h6v6zm8-9h-6v9h6v-9zm8-4h-6v13h6v-13zm0-11l-6 1.221 1.716 1.708-6.85 6.733-3.001-3.002-7.841 7.797 1.41 1.418 6.427-6.39 2.991 2.993 8.28-8.137 1.667 1.66 1.201-6.001z"/></svg>
+        <div class='bottom-content'>
+     <span class='uo-small'>Moje raporty</span>
+     </div>
+  </div>
+</div>
+<div class='widget-wraper up-nav' onclick="openWidget('zamowienia')" data="promotions">
+  <div class="inner-wraper yellow" id="up-promotions">
+    <svg class='svg-icon' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.015 7c4.751 0 8.063 3.012 9.504 4.636-1.401 1.837-4.713 5.364-9.504 5.364-4.42 0-7.93-3.536-9.478-5.407 1.493-1.647 4.817-4.593 9.478-4.593zm0-2c-7.569 0-12.015 6.551-12.015 6.551s4.835 7.449 12.015 7.449c7.733 0 11.985-7.449 11.985-7.449s-4.291-6.551-11.985-6.551zm-.015 3c-2.21 0-4 1.791-4 4s1.79 4 4 4c2.209 0 4-1.791 4-4s-1.791-4-4-4zm-.004 3.999c-.564.564-1.479.564-2.044 0s-.565-1.48 0-2.044c.564-.564 1.479-.564 2.044 0s.565 1.479 0 2.044z"/></svg>
+        <div class='bottom-content'>
+     <span class='uo-small'>Promocje</span>
+     </div>
+  </div>
+</div>
+<div class='widget-wraper up-nav' onclick="openWidget('zamowienia')" data="promo_codes">
+  <div class="inner-wraper orange" id="up-coupons">
+    <svg class='svg-icon' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 3l-.743 2h-1.929l-3.474 12h-13.239l-4.615-11h16.812l-.564 2h-13.24l2.937 7h10.428l3.432-12h4.195zm-15.5 15c-.828 0-1.5.672-1.5 1.5 0 .829.672 1.5 1.5 1.5s1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm6.9-7-1.9 7c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5z"/></svg>
+        <div class='bottom-content'>
+     <span class='uo-small'>Kupony rabatowe</span>
+     </div>
+  </div>
+</div>
+</div>
+</div>
+<div id="result"></div>
+  
+  
+<div id="zamowienia" class="w3-container widget" style="display:none">
+                           
+   <div class="up-container">
+          <div class="green" style="padding:20px;color:white;font-weight:700">
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path style="fill: #ffffff;" d="M24 3l-.743 2h-1.929l-3.474 12h-13.239l-4.615-11h16.812l-.564 2h-13.24l2.937 7h10.428l3.432-12h4.195zm-15.5 15c-.828 0-1.5.672-1.5 1.5 0 .829.672 1.5 1.5 1.5s1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm6.9-7-1.9 7c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5z"/></svg>
+   <span style="vertical-align: super;margin-left: 5px;font-family: 'Roboto', sans-serif;">Zamówienia</span>
+   </div>
+       
+   </div>
+                           
+</div> 
+  
+<div id="dane" class="w3-container widget" style="display:none">
+  
+                            <h4 class="separator no-border row">{translate key='Account settings'}</h4>
+                            <p class="name">{if $user->user->userinfo->firstname || $user->user->userinfo->lastname
+                                }{$user->user->userinfo->firstname|escape} {$user->user->userinfo->lastname|escape}{/if}</p>
+                            <p class="mail">{$user->user->userinfo->email|escape}</p>
+                            
+                            <a href="{route key='panelEdit'}" class="editprofile btn spanhover">
+                                <img src="{baseDir}/public/images/1px.gif" alt="" class="px1" >
+                                <span>{translate key='Edit your profile'}</span>
+                            </a>
+                            <a href="{route key='panelPassword'}" class="changepass btn spanhover">
+                                <img src="{baseDir}/public/images/1px.gif" alt="" class="px1" >
+                                <span>{translate key='Change password'}</span>
+                            </a>
+
+                            <h4 class="separator row">{translate key='Addresses'}</h4>
+                            
+                           
+                            <ul class="address row">
+                                <li>
+                                    <b class="title">{translate key='Billing address'}</b>
+                                    {if $billing_address}
+                                        {assign var=address value=$billing_address->address}
+                                        {if $address->firstname || $address->lastname
+                                            }<p>{if $address->firstname}{$address->firstname|escape} {/if}{if $address->lastname}{$address->lastname|escape}{/if}</p>{/if}
+                                        {if $address->company_name}<p>{$address->company_name|escape}</p>{/if}
+                                        {if $address->tax_id}<p>{translate key='Tax ID'}: {$address->tax_id|escape}</p>{/if}
+                                        {if $address->pesel}<p>{translate key='Personal Identification Number'}: {$address->pesel|escape}</p>{/if}
+                                        {if $address->street_1}<p>{$address->street_1|escape}</p>{/if}
+                                        {if $address->zip_code || $address->city
+                                            }<p>{if $address->zip_code}{$address->zip_code|escape}, {/if}{if $address->city}{$address->city|escape}{/if}</p>{/if}
+                                        {if $address->state}<p>{$address->state|escape}</p>{/if}
+                                        {if $address->country}<p>{$address->country|escape}</p>{/if}
+                                        {if $address->phone}<p>{$address->phone|escape}</p>{/if}
+                                    {else}
+                                        <p>{translate key='[none]'}</p>
+                                    {/if}
+                                </li>
+                                <li>
+                                    <b class="title">{translate key='Delivery address'}</b>
+                                    {if $shipping_address}
+                                        {assign var=address value=$shipping_address->address}
+                                        {if $address->firstname || $address->lastname
+                                            }<p>{if $address->firstname}{$address->firstname|escape} {/if}{if $address->lastname}{$address->lastname|escape}{/if}</p>{/if}
+                                        {if $address->company_name}<p>{$address->company_name|escape}</p>{/if}
+                                        {if $address->tax_id}<p>{translate key='Tax ID'}: {$address->tax_id|escape}</p>{/if}
+                                        {if $address->street_1}<p>{$address->street_1|escape}</p>{/if}
+                                        {if $address->zip_code || $address->city
+                                            }<p>{if $address->zip_code}{$address->zip_code|escape}, {/if}{if $address->city}{$address->city|escape}{/if}</p>{/if}
+                                        {if $address->state}<p>{$address->state|escape}</p>{/if}
+                                        {if $address->country}<p>{$address->country|escape}</p>{/if}
+                                        {if $address->phone}<p>{$address->phone|escape}</p>{/if}
+                                    {else}
+                                        <p>{translate key='[none]'}</p>
+                                    {/if}
+                                </li>
+                            </ul>
+                            <a href="{route key='panelAddressList'}" class="editaddresses btn spanhover">
+                                <img src="{baseDir}/public/images/1px.gif" alt="" class="px1" >
+                                <span>{translate key='Edit an address'}</span>
+                            </a>
+</div>
+ 
+<div id="opinie" class="w3-container widget" style="display:none">
+
+<table class="panel-reviews-table">
+<thead>
+<tr>
+	<th>Produkt</th>
+    <th>Treść recenzji</th>
+    <th>Średnia ocena</th>
+    <th><img style="width:fit-content;width:-moz-fit-content;display:block;margin:0px auto 0px auto;" src="http://mezoko.com/skins/award-24.png" style="display:block;">Jakość wykonania</th>
+    <th><img style="width:fit-content;width:-moz-fit-content;display:block;margin:0px auto 0px auto;" src="http://mezoko.com/skins/wrench-24.png">Prostota instalacji</th>
+    <th><img style="width:fit-content;width:-moz-fit-content;display:block;margin:0px auto 0px auto;" src="http://mezoko.com/skins/flower-24.png">Estetyka</th>
+    <th><img style="width:fit-content;width:-moz-fit-content;display:block;margin:0px auto 0px auto;" src="http://mezoko.com/skins/coin-24.png" >Opłacalność</th>
+    <th>Data dodania</th>
+</tr>
+</thead>
+<tbody id="reviews-body">
+</tbody>
+</table>
+
+<div id="review-paginator"></div>
+
+</div>
+ 
+<div id="limit" class="w3-container widget" style="display:none">
+
+                                <div class="row">
+                                  
+                            <p>Wartość limitu: <span id="limitMaxCalc">{$user->user->userinfo->limit_value|escape}</span> zł</p>
+                            <p>Wykorzystano: <span id="limitCurrentCalc">{$user->user->userinfo->limit_current|escape}</span> zł</p>
+                            <p>Termin płatności: {$user->user->userinfo->limit_time|escape} dni</p>
+                            <p>Pozostało : <span id='limit_remaining'></span></p><br><br>
+                                </div>
+                                <div id="limitAjax"></div>
+</div> 
+ 
+<div id="finances" class="w3-container widget" style="display:none"></div>
+ 
+<div id="raports" class="w3-container widget" style="display:none">
+   
+   <div class="green" style="padding:20px;color:white;font-weight:700">
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path style="fill: #ffffff;" d="M7 24h-6v-6h6v6zm8-9h-6v9h6v-9zm8-4h-6v13h6v-13zm0-11l-6 1.221 1.716 1.708-6.85 6.733-3.001-3.002-7.841 7.797 1.41 1.418 6.427-6.39 2.991 2.993 8.28-8.137 1.667 1.66 1.201-6.001z"/></svg>
+   <span style="vertical-align: super;margin-left: 5px;font-family: 'Roboto', sans-serif;">Moje raporty</span>
+   </div>
+   <div style="padding:20px">
+   <span>Zakupy od:</span>
+    <input type="date" name="salesByProducers" value="1999-01-01">
+    <button>Przelicz</button>
+    </div>
+  <canvas id="myChart" height="40vh" width="80vw"></canvas>  
+    
+</div>
+ 
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>  
+<script>
+    function getAccordions(){
+    
+ var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight){
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+  });
+}   }
+    
+function openWidget(widgetName) {
+    var i;
+    var x = document.getElementsByClassName("widget");
+    for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none"; 
+    }
+    
+    if (widgetName == null){
+    widgetName = "dashboard";
+    }
+    document.getElementById(widgetName).style.display = "block";
+}
+    
+function getDashboard() {
+        var finances = $("#up-finances .up-big");
+        var orders = $("#up-orders .up-big");
+        var reviews = $("#up-reviews .up-big");
+        if (localStorage.getItem('dashboard') === null) {
+            var user_id = 5419;
+            $.ajax({
+                url: 'userPanelController.php'
+                , datatype: Text
+                , data: {
+                    user_id: user_id
+                }
+                , type: 'POST'
+                , success: function (data) {
+                    if (!data.error) {
+                        var content = JSON.parse(data);
+                        console.log(content);
+                        $("#result").html(content);
+                        $(finances).html(content['orders_sum'])
+                        $(orders).html(content['orders_number']);
+                        $(reviews).html(content['review_count']);
+                        localStorage.setItem('dashboard', JSON.stringify(content));
+                    }
+                    else {
+                        $("#result").html(content);
+                    }
+                }
+            });
+        }
+        else {
+            console.log('ls')
+            var content = JSON.parse(localStorage.getItem('dashboard'));
+            console.log(content);
+            $(finances).html(content['orders_sum'])
+            $(orders).html(content['orders_number']);
+            $(reviews).html(content['review_count']);
+        }
+    }
+    
+function getProducerProducts(){
+        var user_id = 3924;
+        var producer_id = 8;
+                 $.ajax({
+                url: 'userPanelController.php'
+                , datatype: Text
+                , data: {
+                    user_id: user_id,producer_id: producer_id
+                }
+                , type: 'POST'
+                , success: function (data) {
+                    if (!data.error) {
+                        var content = JSON.parse(data);
+                        console.log(content);
+                       // console.log(data);
+                        $("#result").html(data);
+                    }
+                    else {
+                        $("#result").html(content);
+                    }
+                }
+            });   
+        
+    }
+    
+$(".up-nav").on("click", function(){
+    console.log($(this).attr('data'));
+});
+    
+    
+function getRaports(){
+    var user_id = 3924;
+    var producers = [];
+    var values = [];
+    
+                     $.ajax({
+                url: 'userPanelController.php'
+                , datatype: Text
+                , data: {
+                    user_id: user_id,
+                    type: 'raports'
+                }
+                , type: 'POST'
+                , success: function (data) {
+                    if (!data.error) {
+                        var content = JSON.parse(data);
+                        console.log(content);
+                        console.log(data);
+                        
+                        for(i=0;i<content['producers'].length;i++){
+                            producers.push(content['producers'][i]['producer_name']);
+                            values.push(content['producers'][i]['sum']);
+                        }
+                        
+                        var ctx = document.getElementById("myChart").getContext('2d');
+                        var content=['rgba(255,99,132,0.2)','rgba(54, 162, 235, 0.2)','rgba(255, 206, 86, 0.2)','rgba(255, 159, 64, 0.2)','rgba(255, 159, 64, 0.2)','rgba(255, 159, 64, 0.2)','rgba(255, 159, 64, 0.2)'];
+                        
+                var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: producers,
+        datasets: [{
+            label: 'suma w zł',
+            data: values,
+            backgroundColor: content,
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+        
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+                      
+                       // $("#raports").html(data);
+                    }
+                    else {
+                        $("#raports").html(content);
+                    }
+                }
+            });  
+    
+}  
+
+function getUserOrders(){
+    
+    var user_id = 3924;
+    var dom = $("#zamowienia .up-container");
+   // var panelContent = ("<div class='up-panel-lc'><p>Numer zamówienia:<span class='panel-order'></span></p><p>Status:</p><p>Płatność:</p><p>Dostawa:</p><p>Faktura:</p></div>");
+    
+                     $.ajax({
+                url: 'userPanelController.php'
+                , datatype: Text
+                , data: {
+                    user_id: user_id,
+                    type: 'orders'
+                }
+                , type: 'POST'
+                , success: function (data) {
+                    if (!data.error) {
+                        var content = JSON.parse(data);
+                        console.log(content);
+                    //    $("#zamowienia").html(data);
+                        
+                    var productsTable = "<table><thead><tr><td>Nazwa produktu</td><td>Ilość</td><td>Cena</td><td>Wartość</td></tr></thead><tbody></tbody><table>"    
+                        
+                        for(i=0;i<content['orders'].length;i++){
+                            var order_id = content['orders'][i]['order_id'];
+                            var sum = content['orders'][i]['sum'];
+                            var payment = content['orders'][i]['payment'];
+                            var shipping = content['orders'][i]['shipping_type'];
+                            var status = content['orders'][i]['status'];
+                            var date = content['orders'][i]['date']; 
+                            var status_id = content['orders'][i]['status_id']; 
+                            
+                          $(dom).append("<button order-id="+order_id+" class='accordion'><span class='up-status stat-"+status_id+"'>"+status+"</span>Zamówienie: "+order_id+" / Wartość: "+sum+"zł / Data:"+date+"</button>");
+                            $(dom).append("<div id='op-"+order_id+"' class='panel' send=0 order-id='"+order_id+"'><div class='up-panel-lc'><p><b>Numer zamówienia:</b> "+order_id+"</p><p><b>Status:</b> "+status+"</p><p><b>Data złożenia:</b> "+date+"</p><p><b>Płatność:</b> "+payment+"</p><p><b>Dostawa:</b> "+shipping+"</p></div><div class='up-panel-address'><div class='shippingAddress'><p><b>Adres dostawy:</b></p></div><div class='invoiceAddress'><p><b>Adres na fakturze:</b></p></div></div><div class='products'>"+productsTable+"</div><div class='summary'></div></div>");
+                        }getAccordions()
+                    }
+                    else {
+                    //    $("#zamowienia").html(content);
+                    }
+                }
+            });   
+}
+    
+    $(".up-container").on("click",'.accordion', function(){
+        
+        var order_id = ($(this).attr('order-id'));
+        var flag = ($(this).attr('send'));
+        var element = $(".panel[order-id='"+order_id+"']").attr('send');
+       if(element == 0){
+           getOrderDetails(order_id);
+       }
+    });
+
+    
+    function getOrderDetails(order_id){
+         var element = $(".panel[order-id='"+order_id+"']");
+        $(element).addClass('spinner');
+         var products = $(".panel[order-id='"+order_id+"'] .products tbody");
+         var summary = $(".panel[order-id='"+order_id+"'] .products .summary");
+         var shippingAddress = $(".panel[order-id='"+order_id+"'] .shippingAddress");
+         var invoiceAddress = $(".panel[order-id='"+order_id+"'] .invoiceAddress");
+      //  element.html('asa');
+    var user_id = 3924;
+        
+                $.ajax({
+                url: 'userPanelController.php'
+                , datatype: Text
+                , data: {
+                    user_id: user_id,
+                    order_id: order_id,
+                    type: 'order'
+                }
+                , type: 'POST'
+                , success: function (data) {
+                    if (!data.error) {
+                        var content = JSON.parse(data);
+                        console.log(content);
+                        for(i=0;i<content['order'].length;i++){
+                            $(products).append("<tr><td>"+content['order'][i]['name']+"</td><td>"+content['order'][i]['quantity']+content['order'][i]['unit']+"</td><td>"+content['order'][i]['price']+"</td><td>"+content['order'][i]['product_sum']+"</td></tr>")
+                        }
+$(summary).append("<p>Razem: "+(parseFloat(content['products_sum'])+parseFloat(content['order'][0]['shipping_cost'])).toFixed(2)+" zł</p><p>Koszt dostawy: "+content['order'][0]['shipping_cost']+" zł</p><p>Przyznane rabaty: "+((parseFloat(content['products_sum'])+parseFloat(content['order'][0]['shipping_cost']))-parseFloat(content['order'][0]['sum'])).toFixed(2)+" zł</p><p>Do zapłaty: "+content['order'][0]['sum']+"</p>");
+                        if(content['invoice']==0){
+                            var address = ("<p>"+content['order'][0]['firstname']+" "+content['order'][0]['lastname']+"</p><p>"+content['order'][0]['street1']+"</p><p>"+content['order'][0]['street2']+"</p><p>"+content['order'][0]['city']+"</p><p>"+content['order'][0]['postcode']+"</p><p>"+content['order'][0]['phone']+"</p>")
+                            $(shippingAddress).append(address);
+                            $(invoiceAddress).append(address);
+                        }
+                        $(element).removeClass('spinner').attr('send',1);
+                        var newH = document.getElementById("op-"+order_id).scrollHeight;
+                        $("#op-"+order_id).css("max-height",newH);
+                    }
+                    else {
+                    //    $("#zamowienia").html(content);
+                    }
+                }
+            }); 
+    }
+    
+    //getDashboard();
+  //  getProducerProducts();
+    getRaports();
+    getUserOrders();
+    
+</script>
+    </body>
+</html>
