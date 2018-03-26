@@ -429,18 +429,83 @@ margin:5px
    </div>
    <div style="padding:20px">
    <span>Zakupy od:</span>
-    <input type="date" name="salesByProducers" value="1999-01-01">
-    <button>Przelicz</button>
-    </div>
-  <canvas id="myChart" height="40vh" width="80vw"></canvas>  
+    <input id="salesByProducersFrom" type="date" name="salesByProducers" value="1999-01-01">
+    <span>do:</span>
+    <input id="salesByProducersTo" type="date" name="salesByProducers" value="1999-01-01">
+    <button id="recalcSalesByProducers">Przelicz</button>
     
+  <canvas id="salesByProducersChart" height="40vh" width="80vw"></canvas>  
+  </div>
+  <div style="padding:20px">
+      <p>Produkty producenta:</p>
+     <select id="producersProducts">
+     </select>
+  </div> 
 </div>
  
   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>  
 <script>
+    
+    function getCurrentDate(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+        dd = '0'+dd
+        } 
+
+        if(mm<10) {
+        mm = '0'+mm
+        } 
+        today = yyyy + '-' + mm + '-' + dd;
+        return today;
+    }
+    
+    $("#salesByProducersTo").val(getCurrentDate());
+    
+    var producers = ['test'];
+    var ctx = document.getElementById("salesByProducersChart").getContext('2d');
+                        var content=['rgba(255,99,132,0.2)','rgba(54, 162, 235, 0.2)','rgba(255, 206, 86, 0.2)','rgba(255, 159, 64, 0.2)','rgba(255, 159, 64, 0.2)','rgba(255, 159, 64, 0.2)','rgba(255, 159, 64, 0.2)'];
+                        var producers = [''];
+                        var values = [''];
+                var salesByProducersChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: producers,
+        datasets: [{
+            label: 'suma w zł',
+            data: values,
+            backgroundColor: content,
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+        
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+    
+    
     function getUserInfo(){
-        var userId = 0000;
+        var userId = 3924;
         var userIp = 0000;
         var userKey = '0000';
         var userSession = 0000;
@@ -546,17 +611,20 @@ $(".up-nav").on("click", function(){
 });
     
     
-function getRaports(){
+function getSalesByProducers(dateFrom,dateTo){
     var user_id = 3924;
     var producers = [];
     var values = [];
+    var init = 0;
     
                      $.ajax({
                 url: 'userPanelController.php'
                 , datatype: Text
                 , data: {
                     user_id: user_id,
-                    type: 'raports'
+                    type: 'raports',
+                    dateFrom: dateFrom,
+                    dateTo: dateTo
                 }
                 , type: 'POST'
                 , success: function (data) {
@@ -564,56 +632,28 @@ function getRaports(){
                         var content = JSON.parse(data);
                         console.log(content);
                         console.log(data);
-                        
+                        $("#producersProducts").html('');
                         for(i=0;i<content['producers'].length;i++){
                             producers.push(content['producers'][i]['producer_name']);
                             values.push(content['producers'][i]['sum']);
+                            
+                            $("#producersProducts").append("<option value='"+content['producers'][i]['producer_id']+"'>"+content['producers'][i]['producer_name']+"</option>");
                         }
-                        
-                        var ctx = document.getElementById("myChart").getContext('2d');
-                        var content=['rgba(255,99,132,0.2)','rgba(54, 162, 235, 0.2)','rgba(255, 206, 86, 0.2)','rgba(255, 159, 64, 0.2)','rgba(255, 159, 64, 0.2)','rgba(255, 159, 64, 0.2)','rgba(255, 159, 64, 0.2)'];
-                        
-                var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: producers,
-        datasets: [{
-            label: 'suma w zł',
-            data: values,
-            backgroundColor: content,
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-        
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
-                      
+                        salesByProducersChart.data.datasets[0].data = values;
+                        salesByProducersChart.data.labels = producers;
+                        salesByProducersChart.update();               
                        // $("#raports").html(data);
                     }
                     else {
                         $("#raports").html(content);
                     }
                 }
-            });  
+            });    
+} 
     
-}  
+function getProductsByProducers(producer_id){
+    
+}    
 
 function getUserOrders(){
     
@@ -664,7 +704,6 @@ function getUserOrders(){
        }
     });
 
-    
     function getOrderDetails(order_id){
          var element = $(".panel[order-id='"+order_id+"']");
         $(element).addClass('spinner');
@@ -713,9 +752,15 @@ $(summary).append("<p>Razem: "+(parseFloat(content['products_sum'])+parseFloat(c
             }); 
     }
     
+    $("#recalcSalesByProducers").on("click", function(){
+    var dateFrom = $("#salesByProducersFrom").val();
+    var dateTo = $("#salesByProducersTo").val();
+        getSalesByProducers(dateFrom,dateTo);
+    });
+
     //getDashboard();
   //  getProducerProducts();
-    getRaports();
+    getSalesByProducers();
     getUserOrders();
     
 </script>
